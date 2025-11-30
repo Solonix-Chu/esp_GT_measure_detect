@@ -25,6 +25,9 @@ esp_err_t example_mount_storage(const char *base_path);
 
 esp_err_t example_start_file_server(const char *base_path);
 
+float get_compressor_threshold(void);
+float get_turbine_threshold(void);
+
 #ifdef __cplusplus
 }
 #endif
