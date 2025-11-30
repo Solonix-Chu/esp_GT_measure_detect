@@ -24,6 +24,7 @@
 #include "compressor_wrapper.h"
 #include "turbine_wrapper.h"
 #include "ssd1306.h"
+#include "buzzer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_mac.h"
@@ -199,6 +200,9 @@ void app_main(void)
     /* Initialize Display */
     ssd1306_init();
     xTaskCreate(display_task, "display_task", 4096, NULL, 5, NULL);
+
+    /* Initialize Buzzer */
+    buzzer_init();
 
     /* Run inference test */
     run_inference_test();

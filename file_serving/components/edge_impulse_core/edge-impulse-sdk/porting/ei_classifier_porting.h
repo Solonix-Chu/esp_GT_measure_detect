@@ -301,7 +301,7 @@ void ei_free(void *ptr);
 // Then check for target spcific build systems
 
 #ifndef EI_PORTING_ESPRESSIF
-#if ((defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32P4)) && EI_PORTING_ZEPHYR == 0)
+#if ((defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32P4) || defined(CONFIG_IDF_TARGET_ESP32C3)) && EI_PORTING_ZEPHYR == 0)
 #include "esp_idf_version.h"
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 #define portTICK_RATE_MS portTICK_PERIOD_MS

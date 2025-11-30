@@ -29,6 +29,7 @@
 
 #include "compressor_wrapper.h"
 #include "turbine_wrapper.h"
+#include "buzzer.h"
 
 /* Max length a file path can have on storage */
 #define FILE_PATH_MAX (ESP_VFS_PATH_MAX + CONFIG_SPIFFS_OBJ_NAME_LEN)
@@ -331,10 +332,13 @@ static esp_err_t upload_post_handler(httpd_req_t *req)
 
     char response_buf[512];
     
+    bool anomaly_detected = false;
+
     char compressor_status[128];
     // Use the global/updated thresholds for check
     if (compressor_decay < g_compressor_threshold) {
         snprintf(compressor_status, sizeof(compressor_status), "<span style='color:red'>Anomaly Detected (Value: %.4f < Threshold: %.3f)</span>", compressor_decay, g_compressor_threshold);
+        anomaly_detected = true;
     } else {
         snprintf(compressor_status, sizeof(compressor_status), "<span style='color:green'>Normal (Value: %.4f)</span>", compressor_decay);
     }
@@ -342,8 +346,13 @@ static esp_err_t upload_post_handler(httpd_req_t *req)
     char turbine_status[128];
     if (turbine_decay < g_turbine_threshold) {
         snprintf(turbine_status, sizeof(turbine_status), "<span style='color:red'>Anomaly Detected (Value: %.4f < Threshold: %.3f)</span>", turbine_decay, g_turbine_threshold);
+        anomaly_detected = true;
     } else {
         snprintf(turbine_status, sizeof(turbine_status), "<span style='color:green'>Normal (Value: %.4f)</span>", turbine_decay);
+    }
+
+    if (anomaly_detected) {
+        buzzer_trigger();
     }
 
     snprintf(response_buf, sizeof(response_buf),

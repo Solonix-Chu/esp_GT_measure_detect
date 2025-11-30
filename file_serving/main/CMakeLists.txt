@@ -1,3 +1,3 @@
-idf_component_register(SRCS "main.c" "file_server.c" "mount.c" "ssd1306.c"
+idf_component_register(SRCS "main.c" "file_server.c" "mount.c" "ssd1306.c" "buzzer.c"
                     INCLUDE_DIRS "."
                     EMBED_FILES "favicon.ico" "upload_script.html")
