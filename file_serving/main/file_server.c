@@ -45,6 +45,10 @@
 static float g_compressor_threshold = 0.95f;
 static float g_turbine_threshold = 0.975f;
 
+/* Global Last Prediction Values */
+static float g_last_compressor_val = 0.0f;
+static float g_last_turbine_val = 0.0f;
+
 float get_compressor_threshold(void)
 {
     return g_compressor_threshold;
@@ -53,6 +57,16 @@ float get_compressor_threshold(void)
 float get_turbine_threshold(void)
 {
     return g_turbine_threshold;
+}
+
+float get_last_compressor_val(void)
+{
+    return g_last_compressor_val;
+}
+
+float get_last_turbine_val(void)
+{
+    return g_last_turbine_val;
 }
 
 struct file_server_data {
@@ -310,6 +324,10 @@ static esp_err_t upload_post_handler(httpd_req_t *req)
 
     compressor_predict(features, &compressor_decay);
     turbine_predict(features, &turbine_decay);
+
+    /* Update globals for display/other modules */
+    g_last_compressor_val = compressor_decay;
+    g_last_turbine_val = turbine_decay;
 
     char response_buf[512];
     
